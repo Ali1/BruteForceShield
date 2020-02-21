@@ -9,22 +9,22 @@ class Configuration {
 	/**
 	 * @var int
 	 */
-	public $timeWindow = 300;
+	private $timeWindow = 300;
 
 	/**
 	 * @var int
 	 */
-	public $totalAttemptsLimit = 8;
+    private $totalAttemptsLimit = 8;
 
 	/**
 	 * @var string|null
 	 */
-	public $stricterLimitKey = null;
+    private $stricterLimitKey = null;
 
 	/**
 	 * @var int|null
 	 */
-	public $stricterLimitAttempts = null;
+    private $stricterLimitAttempts = null;
 
 	/**
 	 * @return int|null
@@ -43,30 +43,34 @@ class Configuration {
 	/**
 	 * @var array
 	 */
-	public $unecryptedKeyNames = [];
+	public $unencryptedKeyNames = [];
 
 	/**
 	 * @return int
 	 */
-	public function getTimeWindow() {
+	public function getTimeWindow(): int
+    {
 		return $this->timeWindow;
 	}
 
 	/**
 	 * @param int $timeWindow
-	 * @return void
+	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function setTimeWindow(int $timeWindow) {
+	public function setTimeWindow(int $timeWindow): Configuration
+    {
 		if ($timeWindow < 1) {
 			throw new InvalidArgumentException('timeWindow must be greater than 0');
 		}
 		$this->timeWindow = $timeWindow;
+		return $this;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getTotalAttemptsLimit() {
+	public function getTotalAttemptsLimit(): int
+    {
 		return $this->totalAttemptsLimit;
 	}
 
@@ -86,42 +90,52 @@ class Configuration {
 	/**
 	 * @return array
 	 */
-	public function getUnecryptedKeyNames() {
-		return $this->unecryptedKeyNames;
+	public function getUnencryptedKeyNames(): array
+    {
+		return $this->unencryptedKeyNames;
 	}
 
-	/**
-	 * @param string $unencryptedKeyName
-	 * @return void
-	 */
-	public function addUnencryptedKeyNames(string $unencryptedKeyName) {
-		$this->unecryptedKeyNames[] = $unencryptedKeyName;
+    /**
+     * @param string $unencryptedKeyName
+     *
+     * @return \Ali1\BruteForceShield\Configuration
+     */
+	public function addUnencryptedKey(string $unencryptedKeyName): Configuration
+    {
+		$this->unencryptedKeyNames[] = $unencryptedKeyName;
+		return $this;
 	}
 
-	/**
-	 * @param string $unencryptedKeyName
-	 * @return void
-	 */
-	public function removeUnencryptedKeyNames(string $unencryptedKeyName): void {
-		$key = array_search($unencryptedKeyName, $this->unecryptedKeyNames, true);
+    /**
+     * @param string $unencryptedKeyName
+     *
+     * @return \Ali1\BruteForceShield\Configuration
+     */
+	public function removeUnencryptedKey(string $unencryptedKeyName): Configuration
+    {
+		$key = array_search($unencryptedKeyName, $this->unencryptedKeyNames, true);
 		if ($key !== false) {
-			unset($this->unecryptedKeyNames[$key]);
+			unset($this->unencryptedKeyNames[$key]);
 		}
+		return $this;
 	}
 
-	/**
-	 * @return void
-	 */
-	public function removeAllUnencryptedKeyNames() {
-		$this->unecryptedKeyNames = [];
+    /**
+     * @return \Ali1\BruteForceShield\Configuration
+     */
+	public function removeAllUnencryptedKeys(): Configuration
+    {
+		$this->unencryptedKeyNames = [];
+		return $this;
 	}
 
 	/**
 	 * @param string $key
 	 * @param int $attempts
-	 * @return void
+	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function setStricterLimitOnKey(string $key, int $attempts): void {
+	public function setStricterLimitOnKey(string $key, int $attempts): Configuration
+    {
 		if ($attempts >= $this->totalAttemptsLimit) {
 			throw new InvalidArgumentException(
 				'If a stricter limit is set on a key, the limit must be fewer than totalAttemptsLimit'
@@ -129,14 +143,24 @@ class Configuration {
 		}
 		$this->stricterLimitKey = $key;
 		$this->stricterLimitAttempts = $attempts;
+		return $this;
 	}
 
 	/**
-	 * @return void
+	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function removeStricterLimit(): void {
+	public function removeStricterLimit(): Configuration {
 		$this->stricterLimitAttempts = null;
 		$this->stricterLimitKey = null;
+		return $this;
 	}
 
+    /**
+     * @param string $keyName
+     *
+     * @return bool
+     */
+    public function isKeyEncrypted(string $keyName): bool {
+        return !in_array($keyName, $this->unencryptedKeyNames, true);
+    }
 }

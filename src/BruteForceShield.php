@@ -48,7 +48,7 @@ class BruteForceShield {
 			$newChallenge->addData(
 				$keyName,
 				(string)$datum,
-				$datum && $this->isKeyEncrypted($keyName, $configuration->unecryptedKeyNames)
+				$datum && $configuration->isKeyEncrypted($keyName)
 			);
 		}
 		unset($inputData);
@@ -63,7 +63,7 @@ class BruteForceShield {
 		}
 		// remove old attempts based on configured time window
 		$userHistory['attempts'] = array_filter($userHistory['attempts'], static function ($attempt) use ($configuration) {
-			return $attempt['time'] > (time() - $configuration->timeWindow);
+			return $attempt['time'] > (time() - $configuration->getTimeWindow());
 		});
 
 		// analyse history of this user
@@ -79,15 +79,15 @@ class BruteForceShield {
 				return $userHistory; // if reached here, that means exactly same attempt previously - do not count
 			}
 
-			if ($configuration->stricterLimitKey
-				&& $newChallenge->matchesAnOldChallenge($oldChallenge, $configuration->stricterLimitKey)
+			if ($configuration->getStricterLimitKey()
+				&& $newChallenge->matchesAnOldChallenge($oldChallenge, $configuration->getStricterLimitKey())
 			) {
 				$firstKeyAttempts++;
 			}
 		}
 
 		if (
-			$totalAttempts <= $configuration->totalAttemptsLimit
+			$totalAttempts <= $configuration->getTotalAttemptsLimit()
 			&& !($configuration->getStricterLimitKey() && $firstKeyAttempts > $configuration->getStricterLimitAttempts())
 		) {
 			$this->validated = true;
@@ -102,16 +102,6 @@ class BruteForceShield {
 		}
 
 		return $userHistory;
-	}
-
-	/**
-	 * @param string $keyName
-	 * @param array $unencryptedKeyNames
-	 *
-	 * @return bool
-	 */
-	private function isKeyEncrypted(string $keyName, array $unencryptedKeyNames): bool {
-		return !in_array($keyName, $unencryptedKeyNames, true);
 	}
 
 	/**

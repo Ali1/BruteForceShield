@@ -1,14 +1,24 @@
 language: php
 
+dist: xenial
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
 php:
   - 7.2
+  - 7.3
   - 7.4
 
 env:
   global:
-    - DEFAULT=1
+    - CODECOVERAGE=1
 
 matrix:
+  fast_finish: true
+
   include:
     - php: 7.2
       env: PREFER_LOWEST=1
@@ -16,36 +26,34 @@ matrix:
     - php: 7.3
       env: CHECKS=1 DEFAULT=0
 
-    - php: 7.3
-      env: CODECOVERAGE=1 DEFAULT=0
-
-  fast_finish: true
+#    - php: 7.3
+#      env: CODECOVERAGE=1 DEFAULT=0
 
 before_install:
   - phpenv config-rm xdebug.ini
 
-before_script:
+install:
   - if [[ $PREFER_LOWEST != 1 ]]; then composer install --prefer-source --no-interaction ; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction ; fi
-  - if [[ $PREFER_LOWEST == 1 ]]; then composer require --dev dereuromark/composer-prefer-lowest:dev-master; fi
-
-  - if [[ $CHECKS != 1 ]]; then composer require --dev phpunit/phpunit:"^8.4"; fi
 
 script:
-  - if [[ $DEFAULT == 1 ]]; then vendor/bin/phpunit; fi
-  - if [[ $CODECOVERAGE == 1 ]]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover=clover.xml; fi
+  - |
+    if [[ $CODECOVERAGE == 1 ]]; then
+      vendor/bin/phpunit --verbose --coverage-clover=clover.xml
+    else
+      vendor/bin/phpunit --verbose
+    fi
 
-  - if [[ $PREFER_LOWEST == 1 ]]; then vendor/bin/validate-prefer-lowest; fi
-
-  - if [[ $CHECKS == 1 ]]; then composer phpstan-setup && composer phpstan; fi
+  - if [[ $CHECKS == 1 ]]; then composer phpstan; fi
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
 
 after_success:
-  - if [[ $CODECOVERAGE == 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
-
-cache:
-  directories:
-    - $HOME/.composer/cache
+  - |
+    if [[ $CODECOVERAGE == 1 ]]; then
+      wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
+      chmod +x php-coveralls.phar
+      ./php-coveralls.phar
+    fi
 
 notifications:
   email: false
