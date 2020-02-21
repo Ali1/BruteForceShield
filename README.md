@@ -18,3 +18,9 @@
 ```
 composer require ali1/brute-force-shield
 ```
+
+### Instructions
+
+To come.
+
+Works well on it's own but designed as to work with for a CakePHP Plugin [Ali1/cakephp-bruteforce](https://github.com/Ali1/cakephp-bruteforce)
