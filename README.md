@@ -41,7 +41,7 @@ As you will need your own architecture to store data and log blocked events, it 
 
 For example a reusable method for your application could be:
 
-```
+```php
 	/**
 	 *
 	 * @param string $name a unique string to store the data under (different $name for different uses of Brute
