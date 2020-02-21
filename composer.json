@@ -1,0 +1,44 @@
+{
+	"name": "ali1/brute-force-shield",
+	"type": "library",
+	"description": "A tool to enable powerful, easy to use, Brute Force Protection.",
+	"keywords": ["security", "bruteforce"],
+	"homepage": "https://github.com/Ali1/BruteForceShield",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Ali Bakir",
+			"homepage": "https://www.alibakir.com/",
+			"role": "Maintainer"
+		}
+	],
+	"require": {
+		"php": ">=7.2",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^8.0",
+		"fig-r/psr2r-sniffer": "dev-master",
+		"phpstan/phpstan": "0.12"
+	},
+	"autoload": {
+		"psr-4": {
+			"Ali1\\BruteForceShield\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Flash\\Test\\": "tests/",
+			"Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
+			"TestApp\\": "tests/TestApp/src/"
+		}
+	},
+	"prefer-stable": true,
+	"scripts": {
+		"test": "phpunit --configuration C:\\Users\\alib\\htdocs\\BruteForceShield\\phpunit.xml.dist --teamcity",
+		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
+		"phpstan": "phpstan analyse -l 5 src/",
+		"cs-check": "phpcs --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/tests/test_files/ --extensions=php -p src/ tests/",
+		"cs-fix": "phpcbf --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/tests/test_files/ --extensions=php -p src/ tests/"
+	}
+}
