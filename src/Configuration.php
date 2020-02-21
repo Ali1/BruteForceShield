@@ -14,17 +14,17 @@ class Configuration {
 	/**
 	 * @var int
 	 */
-    private $totalAttemptsLimit = 8;
+	private $totalAttemptsLimit = 8;
 
 	/**
 	 * @var string|null
 	 */
-    private $stricterLimitKey = null;
+	private $stricterLimitKey = null;
 
 	/**
 	 * @var int|null
 	 */
-    private $stricterLimitAttempts = null;
+	private $stricterLimitAttempts = null;
 
 	/**
 	 * @return int|null
@@ -48,8 +48,7 @@ class Configuration {
 	/**
 	 * @return int
 	 */
-	public function getTimeWindow(): int
-    {
+	public function getTimeWindow(): int {
 		return $this->timeWindow;
 	}
 
@@ -57,8 +56,7 @@ class Configuration {
 	 * @param int $timeWindow
 	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function setTimeWindow(int $timeWindow): Configuration
-    {
+	public function setTimeWindow(int $timeWindow): Configuration {
 		if ($timeWindow < 1) {
 			throw new InvalidArgumentException('timeWindow must be greater than 0');
 		}
@@ -69,8 +67,7 @@ class Configuration {
 	/**
 	 * @return int
 	 */
-	public function getTotalAttemptsLimit(): int
-    {
+	public function getTotalAttemptsLimit(): int {
 		return $this->totalAttemptsLimit;
 	}
 
@@ -90,29 +87,26 @@ class Configuration {
 	/**
 	 * @return array
 	 */
-	public function getUnencryptedKeyNames(): array
-    {
+	public function getUnencryptedKeyNames(): array {
 		return $this->unencryptedKeyNames;
 	}
 
-    /**
-     * @param string $unencryptedKeyName
-     *
-     * @return \Ali1\BruteForceShield\Configuration
-     */
-	public function addUnencryptedKey(string $unencryptedKeyName): Configuration
-    {
+	/**
+	 * @param string $unencryptedKeyName
+	 *
+	 * @return \Ali1\BruteForceShield\Configuration
+	 */
+	public function addUnencryptedKey(string $unencryptedKeyName): Configuration {
 		$this->unencryptedKeyNames[] = $unencryptedKeyName;
 		return $this;
 	}
 
-    /**
-     * @param string $unencryptedKeyName
-     *
-     * @return \Ali1\BruteForceShield\Configuration
-     */
-	public function removeUnencryptedKey(string $unencryptedKeyName): Configuration
-    {
+	/**
+	 * @param string $unencryptedKeyName
+	 *
+	 * @return \Ali1\BruteForceShield\Configuration
+	 */
+	public function removeUnencryptedKey(string $unencryptedKeyName): Configuration {
 		$key = array_search($unencryptedKeyName, $this->unencryptedKeyNames, true);
 		if ($key !== false) {
 			unset($this->unencryptedKeyNames[$key]);
@@ -120,11 +114,10 @@ class Configuration {
 		return $this;
 	}
 
-    /**
-     * @return \Ali1\BruteForceShield\Configuration
-     */
-	public function removeAllUnencryptedKeys(): Configuration
-    {
+	/**
+	 * @return \Ali1\BruteForceShield\Configuration
+	 */
+	public function removeAllUnencryptedKeys(): Configuration {
 		$this->unencryptedKeyNames = [];
 		return $this;
 	}
@@ -134,8 +127,7 @@ class Configuration {
 	 * @param int $attempts
 	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function setStricterLimitOnKey(string $key, int $attempts): Configuration
-    {
+	public function setStricterLimitOnKey(string $key, int $attempts): Configuration {
 		if ($attempts >= $this->totalAttemptsLimit) {
 			throw new InvalidArgumentException(
 				'If a stricter limit is set on a key, the limit must be fewer than totalAttemptsLimit'
@@ -155,12 +147,13 @@ class Configuration {
 		return $this;
 	}
 
-    /**
-     * @param string $keyName
-     *
-     * @return bool
-     */
-    public function isKeyEncrypted(string $keyName): bool {
-        return !in_array($keyName, $this->unencryptedKeyNames, true);
-    }
+	/**
+	 * @param string $keyName
+	 *
+	 * @return bool
+	 */
+	public function isKeyEncrypted(string $keyName): bool {
+		return !in_array($keyName, $this->unencryptedKeyNames, true);
+	}
+
 }

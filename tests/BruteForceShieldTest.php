@@ -24,7 +24,7 @@ class BruteForceShieldTest extends TestCase {
 	 */
 	public function testUserAuthFullyUnencrypted(): void {
 		$bruteConfig = new Configuration();
-        $bruteConfig->setTotalAttemptsLimit(6);
+		$bruteConfig->setTotalAttemptsLimit(6);
 		$bruteConfig->setStricterLimitOnKey('username', 5);
 		$bruteConfig->addUnencryptedKey('username');
 		$bruteConfig->addUnencryptedKey('password');
@@ -36,7 +36,7 @@ class BruteForceShieldTest extends TestCase {
 	 */
 	public function testUserAuthFullyEncrypted(): void {
 		$bruteConfig = new Configuration();
-        $bruteConfig->setTotalAttemptsLimit(6);
+		$bruteConfig->setTotalAttemptsLimit(6);
 		$bruteConfig->setStricterLimitOnKey('username', 5);
 		$this->commonUserAuthTests($bruteConfig);
 	}
@@ -101,7 +101,7 @@ class BruteForceShieldTest extends TestCase {
 	 */
 	public function testSingleKeyAndTimeWindow(): void {
 		$bruteConfig = new Configuration();
-        $bruteConfig->setTotalAttemptsLimit(5);
+		$bruteConfig->setTotalAttemptsLimit(5);
 		$bruteConfig->setTimeWindow(7);
 		$inputData = ['hash' => 'start'];
 		$userHistory = null;
@@ -149,7 +149,7 @@ class BruteForceShieldTest extends TestCase {
 	 */
 	public function testEmptyChallenge(): void {
 		$bruteConfig = new Configuration();
-        $bruteConfig->setTotalAttemptsLimit(5);
+		$bruteConfig->setTotalAttemptsLimit(5);
 		$bruteConfig->setTimeWindow(7);
 		$userHistory = null;
 		$inputData = [];
