@@ -32,8 +32,8 @@ When applying protection, a Ali1\BruteForceShield\Configuration object can be pr
 |---|---|
 |`setTimeWindow(int $timeWindow)`|Time in seconds until Brute Force Protection resets (default: 300)|
 |`setTotalAttemptsLimit(int $totalAttempts)`|Number of attempts before blocking further challenges (default: 8)|
-|`addUnencryptedKey(string $keyName)`|By default, all entered user data is irreversibly hashed when prepared for storage. Use this method for each key that you wish for the data to be stored unencrypted to help debugging or profiling in the cache or logs (i.e. usernames)|
-|`setStricterLimitOnKey(string $keyName, int $limitAttempts)`|This optional method can be used to configure the shield to further limit the number of attempts if using the same identifier (good for username/password forms - use `setStricterLimitOnKey('username', 5)` and `setTotalAttemptsLimit(10)` to allow 5 attempts for a user, and then another 5 if user tries a different username)|
+|`addUnencryptedKey(string $keyName)`|By default, all entered user data is irreversibly hashed when prepared for storage. Use `addUnencryptedKey` for each key for which you want the data to be stored plaintext to aid debugging or security logging (i.e. usernames)|
+|`setStricterLimitOnKey(string $keyName, int $limitAttempts)`|This optional method is useful in id/password type scenarios. You can configure the shield to further limit the number of attempts if using the same id/username repeatedly (i.e. use `setStricterLimitOnKey('username', 7)` and `setTotalAttemptsLimit(10)` to allow 7 attempts for a user, and then another 3 if user tries a different username)|
 
 ### Usage
 

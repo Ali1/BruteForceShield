@@ -87,8 +87,8 @@ class BruteForceShield {
 		}
 
 		if (
-			$totalAttempts <= $configuration->getTotalAttemptsLimit()
-			&& !($configuration->getStricterLimitKey() && $firstKeyAttempts > $configuration->getStricterLimitAttempts())
+			$totalAttempts < $configuration->getTotalAttemptsLimit()
+			&& (!$configuration->getStricterLimitKey() || $firstKeyAttempts < $configuration->getStricterLimitAttempts())
 		) {
 			$this->validated = true;
 		}

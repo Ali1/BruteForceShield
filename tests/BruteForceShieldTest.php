@@ -58,7 +58,7 @@ class BruteForceShieldTest extends TestCase {
 		if (!$protector->isValidated()) {
 			$allowsAttempts = false;
 		} else {
-			for ($i = 1; $i <= 5; $i++) {
+			for ($i = 1; $i <= 4; $i++) {
 				$protector = new BruteForceShield();
 				$inputData['password'] = (string)mt_rand();
 				$userHistory = $protector->validate($userHistory, $inputData, $bruteConfig);
@@ -113,7 +113,7 @@ class BruteForceShieldTest extends TestCase {
 		if (!$protector->isValidated()) {
 			$allowsAttempts = false;
 		} else {
-			for ($i = 1; $i <= 5; $i++) {
+			for ($i = 1; $i <= 4; $i++) {
 				$protector = new BruteForceShield();
 				$inputData['hash'] = (string)mt_rand();
 				$userHistory = $protector->validate($userHistory, $inputData, $bruteConfig);
