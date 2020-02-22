@@ -53,23 +53,23 @@ However if you want to use it directly, here is an example:
             ->setStricterLimitOnKey('username', 7)
             ->addUnencryptedKey('username');
 
-		$cacheKey = 'BruteforceData.login.' . str_replace(':', '.', $_SERVER['REMOTE_ADDR']);
-		$userDataRaw = Cache::read($cacheKey); // replace with your way of retrieving stored user data
+        $cacheKey = 'BruteforceData.login.' . str_replace(':', '.', $_SERVER['REMOTE_ADDR']);
+        $userDataRaw = Cache::read($cacheKey); // replace with your way of retrieving stored user data
 
-		$shield = new BruteForceShield();
-		$userData = $userDataRaw ? json_decode($userDataRaw, true) : null;
-		$userData = $shield->validate($userData, $_POST, $bruteConfig);
+        $shield = new BruteForceShield();
+        $userData = $userDataRaw ? json_decode($userDataRaw, true) : null;
+        $userData = $shield->validate($userData, $_POST, $bruteConfig);
 
-		Cache::write($cacheKey, json_encode($userData)); // replace with your way of retrieving stored user data
+        Cache::write($cacheKey, json_encode($userData)); // replace with your way of retrieving stored user data
 
-		if (!$shield->isValidated()) {
-			Log::alert(
-				"Bruteforce blocked\nIP: {$this->getController()->getRequest()->getEnv('REMOTE_ADDR')}\n",
-				json_encode($userData)
-			); // replace with your own method of logging
+        if (!$shield->isValidated()) {
+            Log::alert(
+                "Bruteforce blocked\nIP: {$this->getController()->getRequest()->getEnv('REMOTE_ADDR')}\n",
+                json_encode($userData)
+            ); // replace with your own method of logging
 
-			throw new TooManyAttemptsException(); // replace with your way of error handling and stopping execution
-		}
+            throw new TooManyAttemptsException(); // replace with your way of error handling and stopping execution
+        }
 
         // now you can process the login attempt in the normal way
     }
