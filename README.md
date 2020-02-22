@@ -24,8 +24,8 @@ When applying protection, a Ali1\BruteForceShield\Configuration object can be pr
 
 ```php
     $configuration = new Configuration();
-    $configuration->setTimeWindow(600);
-    $configuration->setTotalAttemptsLimit(10);
+    $configuration->setTimeWindow(600) 
+        ->setTotalAttemptsLimit(10);
 ```
 
 |Configuration method|Details|
@@ -49,9 +49,9 @@ However if you want to use it directly, here is an example:
     {
         // prior to actually verifying data
         $bruteConfig = new Configuration();
-        $bruteConfig->setTotalAttemptsLimit(10);
-        $bruteConfig->setStricterLimitOnKey('username', 7);
-        $bruteConfig->addUnencryptedKey('username');
+        $bruteConfig->setTotalAttemptsLimit(10)
+            ->setStricterLimitOnKey('username', 7)
+            ->addUnencryptedKey('username');
 
 		$cacheKey = 'BruteforceData.login.' . str_replace(':', '.', $_SERVER['REMOTE_ADDR']);
 		$userDataRaw = Cache::read($cacheKey); // replace with your way of retrieving stored user data
