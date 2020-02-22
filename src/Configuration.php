@@ -73,15 +73,16 @@ class Configuration {
 
 	/**
 	 * @param int $totalAttemptsLimit
-	 * @return void
+	 * @return \Ali1\BruteForceShield\Configuration
 	 */
-	public function setTotalAttemptsLimit(int $totalAttemptsLimit): void {
+	public function setTotalAttemptsLimit(int $totalAttemptsLimit): Configuration {
 		if ($this->stricterLimitAttempts && $totalAttemptsLimit <= $this->stricterLimitAttempts) {
 			throw new InvalidArgumentException(
 				'If a stricter limit on a key is set, total totalAttemptsLimit must be greater'
 			);
 		}
 		$this->totalAttemptsLimit = $totalAttemptsLimit;
+		return $this;
 	}
 
 	/**
