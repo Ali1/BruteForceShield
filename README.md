@@ -39,39 +39,9 @@ When applying protection, a Ali1\BruteForceShield\Configuration object can be pr
 
 As you will need your own architecture to store data and log blocked events, it is recommended to create a method, function, component or middleware to use this library.
 
-For example a reusable method for your application could be:
+Check out [this CakePHP component](https://github.com/Ali1/cakephp-bruteforce/blob/master/src/Controller/Component/BruteforceComponent.php) as an example of a helper method you could use.
 
-```php
-	/**
-	 *
-	 * @param string $name a unique string to store the data under (different $name for different uses of Brute
-	 *                          force protection within the same application.
-	 * @param array $data an array of input data, safe to use $_POST
-	 * @param \Ali1\BruteForceShield\Configuration|null $bruteConfig (optional)
-	 * @param string $cache (default: 'default')
-	 *
-	 * @return bool
-	 */
-	public function validateBruteForce(string $name, array $data, ?Configuration $bruteConfig = null, $cache = 'default'): bool {
-		$cacheKey = 'BruteforceData.' . str_replace(':', '.', $_SERVER['REMOTE_ADDR']) . '.' . $name;
-		$shield = new BruteForceShield();
-		$userDataRaw = Cache::read($cacheKey, $cache);
-		$userData = $userDataRaw ? json_decode($userDataRaw, true) : null;
-		$userData = $shield->validate($userData, $data, $bruteConfig);
-		Cache::write($cacheKey, json_encode($userData), $cache);
-		if (!$shield->isValidated()) {
-			Log::alert(
-				"Bruteforce blocked\nIP: {$this->getController()->getRequest()->getEnv('REMOTE_ADDR')}\n",
-				json_encode($userData)
-			);
-
-			throw new TooManyAttemptsException();
-		}
-		return $shield->isValidated();
-    }
-```
-
-And then when you want to apply Protection to a method, use:
+However if you want to use it directly, here is an example:
 
 ```php
 
@@ -83,12 +53,24 @@ And then when you want to apply Protection to a method, use:
         $bruteConfig->setStricterLimitOnKey('username', 7);
         $bruteConfig->addUnencryptedKey('username');
 
-        $this->validateBruteForce(
-            'login', // unique name for this BruteForce action
-            ['username' => $this->requst->getData('username'), 'password' => $this->requst->getData('password')],
-            $bruteConfig
-        );
+		$cacheKey = 'BruteforceData.login.' . str_replace(':', '.', $_SERVER['REMOTE_ADDR']);
+		$userDataRaw = Cache::read($cacheKey); // replace with your way of retrieving stored user data
 
-        // login code after 
+		$shield = new BruteForceShield();
+		$userData = $userDataRaw ? json_decode($userDataRaw, true) : null;
+		$userData = $shield->validate($userData, $_POST, $bruteConfig);
+
+		Cache::write($cacheKey, json_encode($userData)); // replace with your way of retrieving stored user data
+
+		if (!$shield->isValidated()) {
+			Log::alert(
+				"Bruteforce blocked\nIP: {$this->getController()->getRequest()->getEnv('REMOTE_ADDR')}\n",
+				json_encode($userData)
+			); // replace with your own method of logging
+
+			throw new TooManyAttemptsException(); // replace with your way of error handling and stopping execution
+		}
+
+        // now you can process the login attempt in the normal way
     }
 ```
