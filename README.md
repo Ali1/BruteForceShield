@@ -60,7 +60,7 @@ However if you want to use it directly, here is an example:
         $userData = $userDataRaw ? json_decode($userDataRaw, true) : null;
         $userData = $shield->validate($userData, $_POST, $bruteConfig);
 
-        Cache::write($cacheKey, json_encode($userData)); // replace with your way of retrieving stored user data
+        Cache::write($cacheKey, json_encode($userData)); // replace with your way of storing user data
 
         if (!$shield->isValidated()) {
             Log::alert(
