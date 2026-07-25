@@ -58,8 +58,8 @@ class Challenge {
 		}
 
 		foreach ($this->unencryptedData as $keyName => $datum) {
-		    if ($onlyTestKey && $keyName !== $onlyTestKey) {
-		        continue;
+			if ($onlyTestKey && $keyName !== $onlyTestKey) {
+				continue;
 			}
 
 			if ($oldChallenge->isKeyEncrypted($keyName)) {
@@ -72,6 +72,7 @@ class Challenge {
 				}
 			}
 		}
+
 		return true;
 	}
 

@@ -40,5 +40,10 @@
 		"phpstan": "phpstan analyse -l 5 src/",
 		"cs-check": "phpcs --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/tests/test_files/ --extensions=php -p src/ tests/",
 		"cs-fix": "phpcbf --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/tests/test_files/ --extensions=php -p src/ tests/"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

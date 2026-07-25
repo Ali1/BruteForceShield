@@ -45,16 +45,13 @@ class BruteForceShield {
 				$isEmptyChallenge = false;
 			}
 
-			$newChallenge->addData(
-				$keyName,
-				(string)$datum,
-				$datum && $configuration->isKeyEncrypted($keyName)
-			);
+			$newChallenge->addData($keyName, (string)$datum, $datum && $configuration->isKeyEncrypted($keyName));
 		}
 		unset($inputData);
 
 		if ($isEmptyChallenge) {
 			$this->validated = true;
+
 			return $userHistory; // no need for protection to be applied for empty challenges (challenge not counted towards limit)
 		}
 
@@ -76,6 +73,7 @@ class BruteForceShield {
 			// no need to applyProtection and count this challenge if it is identical to a previous challenge attempt
 			if ($newChallenge->matchesAnOldChallenge($oldChallenge)) {
 				$this->validated = true;
+
 				return $userHistory; // if reached here, that means exactly same attempt previously - do not count
 			}
 
