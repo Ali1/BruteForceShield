@@ -1,7 +1,7 @@
 {
 	"name": "ali1/brute-force-shield",
 	"type": "library",
-	"description": "A tool to enable powerful, easy to use, Brute Force Protection.",
+	"description": "Archived storage-agnostic brute-force protection engine.",
 	"keywords": ["security", "bruteforce"],
 	"homepage": "https://github.com/Ali1/BruteForceShield",
 	"license": "MIT",
